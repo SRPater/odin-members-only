@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> | Exclusive Clubhouse</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <%- include('partials/nav') %>
+  
+  <main>
+    <h2>Join the Club</h2>
+
+    <% if (locals.errors) { %>
+      <ul class="errors">
+        <% errors.forEach(error => { %>
+          <li><%= error.msg %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+
+    <form action="/sign-up" method="POST" class="auth-form">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input
+          type="text"
+          id="firstName"
+          name="firstName"
+          value="<%= locals.previousData ? previousData.firstName : '' %>"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input
+          type="text"
+          id="lastName"
+          name="lastName"
+          value="<%= locals.previousData ? previousData.lastName : '' %>"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label for="email">Email (Username)</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value="<%= locals.previousData ? previousData.email : '' %>"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          required
+        >
+      </div>
+      <button type="submit">Sign Up</button>
+    </form>
+    <p>Already a member? <a href="/log-in">Log in</a></p>
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+</html>
