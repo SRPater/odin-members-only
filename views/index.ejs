@@ -1,20 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-  <%- include('partials/header') %>
-  <%- include('partials/nav') %>
+<%- include('partials/header') %>
+<%- include('partials/nav') %>
 
-  <main>
-    <h2>Welcome to the Clubhouse</h2>
-    <p>A place for anonymous secrets. Sign up to join the elite.</p>
-  </main>
+<main>
+  <h1><%= title %></h1>
+  <% if (locals.currentUser) { %>
+    <p>Welcome back, <%= currentUser.first_name %>!</p>
+  <% } else { %>
+    <p>Welcome to the clubhouse. Please log in to see the secret messages.</p>
+  <% } %>
+</main>
 
-  <%- include('partials/footer') %>
-</body>
-</html>
+<%- include('partials/footer') %>

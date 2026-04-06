@@ -47,16 +47,22 @@ export const postSignUp = [
       const sql = `
         INSERT INTO users (first_name, last_name, email, password)
         VALUES ($1, $2, $3, $4)
+        RETURNING *
       `;
 
-      await pool.query(sql, [
+      const { rows } = await pool.query(sql, [
         req.body.firstName,
         req.body.lastName,
         req.body.email,
-        req.body.password,
+        hashedPassword,
       ]);
 
-      res.redirect('/');
+      const user = rows[0];
+
+      req.login(user, (err) => {
+        if (err) return next(err);
+        return res.redirect('/');
+      });
     } catch (err) {
       return next(err);
     }
