@@ -1,0 +1,40 @@
+<%- include ('partials/header') %>
+<%- include ('partials/nav') %>
+
+<main>
+  <h2>Post a New Message</h2>
+
+  <% if (locals.errors && errors.length > 0) { %>
+    <ul class="errors">
+      <% errors.forEach(error => { %>
+        <li><%= error.msg %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <form action="/messages/new" method="POST" class="message-form">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        value="<%= locals.previousData ? previousData.title : '' %>"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="text">Message</label>
+      <textarea
+        id="text"
+        name="text"
+        required
+        rows="8"
+      ><%= locals.previousData ? previousData.text : '' %></textarea>
+    </div>
+
+    <button type="submit">Post Message</button>
+  </form>
+</main>
+
+<%- include('partials/footer') %>

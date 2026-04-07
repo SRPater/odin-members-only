@@ -5,6 +5,7 @@ import session from 'express-session';
 import flash from 'connect-flash';
 import passport from './config/passport.js';
 import usersRouter from './routes/usersRouter.js';
+import messagesRouter from './routes/messagesRouter.js';
 
 const app = express();
 
@@ -27,15 +28,12 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   
   const flashErrors = req.flash('error');
-  res.locals.error = flashErrors.length > 0 ? flashErrors : null;
+  res.locals.errors = flashErrors.length > 0 ? flashErrors : null;
   
   next();
 });
 
-app.get('/', (req, res) => {
-  res.render('index', { title: 'Members Only'});
-});
-
+app.use('/', messagesRouter);
 app.use('/', usersRouter);
 
 const PORT = process.env.PORT || 3000;

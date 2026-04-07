@@ -3,11 +3,38 @@
 
 <main>
   <h1><%= title %></h1>
+
   <% if (locals.currentUser) { %>
-    <p>Welcome back, <%= currentUser.first_name %>!</p>
-  <% } else { %>
-    <p>Welcome to the clubhouse. Please log in to see the secret messages.</p>
+    <a href="/messages/new" class="btn">Post New Message</a>
   <% } %>
+
+  <section class="message-list">
+    <% if (messages && messages.length > 0) { %>
+      <% messages.forEach(msg => { %>
+        <div class="message-card">
+          <h2><%= msg.title %></h2>
+          <p><%= msg.text %></p>
+
+          <hr>
+
+          <div class="meta">
+            <% if (locals.currentUser && currentUser.is_member) { %>
+              <p>
+                By: <strong><%= msg.first_name %> <%= msg.last_name %></strong>
+              </p>
+              <p>Posted: <%= msg.timestamp.toLocaleString('nl-NL') %></p>
+            <% } else { %>
+              <p>
+                <em>Author hidden. Become a member to see who posted this!</em>
+              </p>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p>The clubhouse is quiet... No messages yet.</p>
+    <% } %>
+  </section>
 </main>
 
 <%- include('partials/footer') %>
