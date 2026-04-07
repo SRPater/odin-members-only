@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+<%- include('partials/nav') %>
+
+<main>
+  <h2><%= title %></h2>
+  <p>Enter the secret passcode to become an <strong><%= target %></strong>.</p>
+
+  <% if (locals.errors && errors.length > 0) { %>
+    <ul class="errors">
+      <% errors.forEach(error => { %>
+        <li><%= error %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <form action="<%= action %>" method="POST" class="auth-form">
+    <div class="form-group">
+      <label for="passcode">Passcode</label>
+      <input type="text" id="passcode" name="passcode" required autofocus>
+    </div>
+    
+    <button type="submit">Unlock <%= target %> Status</button>
+  </form>
+</main>
+
+<%- include('partials/footer') %>

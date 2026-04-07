@@ -1,6 +1,6 @@
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
-import pool from '../db/pool.js';
+import * as db from '../db/usersQueries.js';
 
 export const getSignUp = (req, res) => {
   res.render('sign-up-form', { title: 'Sign Up' });
@@ -44,20 +44,13 @@ export const postSignUp = [
 
     try {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      const sql = `
-        INSERT INTO users (first_name, last_name, email, password)
-        VALUES ($1, $2, $3, $4)
-        RETURNING *
-      `;
-
-      const { rows } = await pool.query(sql, [
+      
+      const user = await db.createUser(
         req.body.firstName,
         req.body.lastName,
         req.body.email,
         hashedPassword,
-      ]);
-
-      const user = rows[0];
+      );
 
       req.login(user, (err) => {
         if (err) return next(err);
@@ -68,3 +61,34 @@ export const postSignUp = [
     }
   },
 ];
+
+export const getMembership = (req, res) => {
+  if (!req.user) return res.redirect('/log-in');
+
+  res.render('passcode-form', {
+    title: 'Unlock Member Status',
+    target: 'Member',
+    action: '/membership',
+  });
+};
+
+export const postMembership = async (req, res, next) => {
+  const { passcode } = req.body;
+  const secretCode = process.env.PASSPHRASE_MEMBER;
+
+  if (passcode !== secretCode) {
+    return res.render('passcode-form', {
+      title: 'Unlock Member Status',
+      target: 'Member',
+      action: '/membership',
+      errors: ['Incorrect passcode. Try again!'],
+    });
+  }
+  
+  try {
+    await db.updateUserMembership(req.user.id);
+    res.redirect('/');
+  } catch (err) {
+    return next(err);
+  }
+};

@@ -11,4 +11,7 @@ usersRouter.get('/log-in', authController.getLogin);
 usersRouter.post('/log-in', authController.postLogin);
 usersRouter.get('/log-out', authController.getLogout);
 
+usersRouter.get('/membership', usersController.getMembership);
+usersRouter.post('/membership', usersController.postMembership);
+
 export default usersRouter;
