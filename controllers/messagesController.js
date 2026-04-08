@@ -57,3 +57,18 @@ export const postNewMessage = [
     }
   },
 ];
+
+export const postDeleteMessage = async (req, res, next) => {
+  if (!req.user || !req.user.is_admin) {
+    const err = new Error('Unauthorized');
+    err.status = 403;
+    return next(err);
+  }
+
+  try {
+    await db.deleteMessage(req.params.id);
+    res.redirect('/');
+  } catch (err) {
+    next(err);
+  }
+};

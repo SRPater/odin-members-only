@@ -18,15 +18,25 @@
           <hr>
 
           <div class="meta">
-            <% if (locals.currentUser && currentUser.is_member) { %>
-              <p>
-                By: <strong><%= msg.first_name %> <%= msg.last_name %></strong>
-              </p>
-              <p>Posted: <%= msg.timestamp.toLocaleString('nl-NL') %></p>
-            <% } else { %>
-              <p>
-                <em>Author hidden. Become a member to see who posted this!</em>
-              </p>
+            <div class="meta-info">
+              <% if (locals.currentUser && currentUser.is_member) { %>
+                <p>
+                  By: <strong><%= msg.first_name %> <%= msg.last_name %></strong>
+                </p>
+                <p>Posted: <%= msg.timestamp.toLocaleString('nl-NL') %></p>
+              <% } else { %>
+                <p>
+                  <em>
+                    Author hidden. Become a member to see who posted this!
+                  </em>
+                </p>
+              <% } %>
+            </div>
+
+            <% if (locals.currentUser && currentUser.is_admin) { %>
+              <form action="/messages/<%= msg.id %>/delete" method="POST">
+                <button type="submit" class="delete-btn">Delete Message</button>
+              </form>
             <% } %>
           </div>
         </div>

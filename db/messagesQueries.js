@@ -26,3 +26,8 @@ export const createMessage = async (title, text, authorId) => {
 
   await pool.query(sql, [title, text, authorId]);
 };
+
+export const deleteMessage = async (messageId) => {
+  const sql = 'DELETE FROM messages WHERE id = $1';
+  await pool.query(sql, [messageId]);
+};

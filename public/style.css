@@ -97,6 +97,9 @@ main {
 }
 
 .meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
   font-size: 0.85rem;
   color: #666;
   font-style: italic;
@@ -104,6 +107,19 @@ main {
 
 .meta p {
   margin: 0.2rem 0;
+}
+
+.delete-btn {
+  background-color: var(--error-color);
+  width: auto;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.75rem;
+  margin: 0;
+  font-style: normal;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
 }
 
 /* Form Styling */
