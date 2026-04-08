@@ -26,3 +26,8 @@ export const updateUserMembership = async (userId) => {
   const sql = 'UPDATE users SET is_member = true WHERE id = $1';
   await pool.query(sql, [userId]);
 };
+
+export const updateUserAdminStatus = async (userId) => {
+  const sql = 'UPDATE users SET is_admin = true WHERE id = $1';
+  await pool.query(sql, [userId]);
+};

@@ -14,4 +14,7 @@ usersRouter.get('/log-out', authController.getLogout);
 usersRouter.get('/membership', usersController.getMembership);
 usersRouter.post('/membership', usersController.postMembership);
 
+usersRouter.get('/admin', usersController.getAdmin);
+usersRouter.post('/admin', usersController.postAdmin);
+
 export default usersRouter;

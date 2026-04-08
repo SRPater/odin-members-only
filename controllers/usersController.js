@@ -64,6 +64,7 @@ export const postSignUp = [
 
 export const getMembership = (req, res) => {
   if (!req.user) return res.redirect('/log-in');
+  if (req.user.is_member) return res.redirect('/');
 
   res.render('passcode-form', {
     title: 'Unlock Member Status',
@@ -73,8 +74,8 @@ export const getMembership = (req, res) => {
 };
 
 export const postMembership = async (req, res, next) => {
-  const { passcode } = req.body;
-  const secretCode = process.env.PASSPHRASE_MEMBER;
+  const passcode = req.body.passcode?.trim();
+  const secretCode = process.env.MEMBER_PASSCODE;
 
   if (passcode !== secretCode) {
     return res.render('passcode-form', {
@@ -87,6 +88,38 @@ export const postMembership = async (req, res, next) => {
   
   try {
     await db.updateUserMembership(req.user.id);
+    res.redirect('/');
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const getAdmin = (req, res) => {
+  if (!req.user) return res.redirect('/log-in');
+  if (req.user.is_admin) return res.redirect('/');
+
+  res.render('passcode-form', {
+    title: 'Become an Admin',
+    target: 'Admin',
+    action: '/admin',
+  });
+};
+
+export const postAdmin = async (req, res) => {
+  const passcode = req.body.passcode?.trim();
+  const secretCode = process.env.ADMIN_PASSCODE;
+
+  if (passcode !== secretCode) {
+    return res.render('passcode-form', {
+      title: 'Become an Admin',
+      target: 'Admin',
+      action: '/admin',
+      errors: ['Incorrect passcode. Try again!'],
+    });
+  }
+
+  try {
+    await db.updateUserAdminStatus(req.user.id);
     res.redirect('/');
   } catch (err) {
     return next(err);
